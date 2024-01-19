@@ -34,7 +34,7 @@ const Header = () => {
             {/* <FaSun/> */}
           </Button >
           <Link to='login' className='hidden md:inline'>
-            <Button gradientDuoTone='greenToBlue'>
+            <Button gradientDuoTone='greenToBlue' outline>
               Sign in
             </Button>
           </Link>
@@ -52,7 +52,7 @@ const Header = () => {
             </Navbar.Link>
             <Navbar.Link active={path === '/login'} as={'div'}>
               <Link to='/login' className='inline md:hidden'>
-                <Button gradientDuoTone='greenToBlue'>
+                <Button gradientDuoTone='greenToBlue' outline>
                   Sign in
                 </Button>
               </Link>
