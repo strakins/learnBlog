@@ -31,10 +31,10 @@ const Register = () => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(formData)
       });
-      // const data = res.json();
-      // if(data.success === false) {
-      //   setError(data.message)
-      // }
+      const data = res.json();
+      if(data.success === false) {
+        setError(data.message)
+      }
       setIsLoading(false);
       if(res.ok) {
         navigate('/login')
