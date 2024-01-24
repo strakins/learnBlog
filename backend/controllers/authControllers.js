@@ -1,7 +1,7 @@
 import { errorHandler } from '../utils/error.js';
 import User from '../models/userModel.js';
 import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'; 
 
 export const signUp = async (req, res, next) => {
     const {username, email, password} = req.body;
@@ -61,4 +61,14 @@ export const login = async (req, res, next) => {
      } catch (error) {
         next(error)
     }
+};
+
+export const google = async (req, res, next) => {
+    const { name, email, googlePhotoUrl } = req.body;
+    try {
+        
+    } catch (error) {
+        
+    }
 }
+
