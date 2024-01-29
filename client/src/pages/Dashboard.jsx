@@ -29,12 +29,11 @@ const Dashboard = () => {
 
 
         {/* Main section */}
-        <div className="">
+        
           {tab === 'profile' && < DashboardProfile />}
-        </div>
-        <div className="">
+        
           {tab === 'posts' && < DashboardPosts />}
-        </div>
+        
       </div>
     </div>
   )
