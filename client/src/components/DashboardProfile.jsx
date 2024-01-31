@@ -10,7 +10,15 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateSuccess, updatefailure, deleteUserStart, deleteUserSuccess, deleteUserFailure } from '../redux/user/userSlice';
+import { 
+  updateStart, 
+  updateSuccess, 
+  updatefailure, 
+  deleteUserStart, 
+  deleteUserSuccess, 
+  deleteUserFailure, 
+  signOutSuceess 
+} from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 
@@ -138,7 +146,23 @@ const DashboardProfile = () => {
       dispatch(deleteUserFailure(error.message))
     }
 
-  }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: "POST"
+      });
+      const data = await res.json();
+      if(!res.ok) {
+        console.log(data.message);
+      }else {
+        dispatch(signOutSuceess())
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className='max-w-lg mx-auto p-4 w-full'>
@@ -213,7 +237,7 @@ const DashboardProfile = () => {
       }
       <div className="text-red-500 flex justify-between mt-5 font-semibold cursor-pointer">
         <span onClick={() => setShowModal(true)}>Delete Account</span>
-        <span>Sign Out</span>
+        <span onClick={handleSignOut}>Sign Out</span>
       </div>
       <Modal 
         show={showModal} 
