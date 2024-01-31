@@ -10,7 +10,8 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
+import { updateStart, updateSuccess, updatefailure } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 const DashboardProfile = () => {
 
@@ -19,7 +20,13 @@ const DashboardProfile = () => {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setimageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setimageFileUploadErrror] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [updateUserSuccess, setUpdateUserSucess] = useState(null)
+  const [updateUserError, setUpdateUserError] = useState(null)
+  const [imageFileUploading, setImageFileUploading] = useState(false) 
   const fileUploadRef = useRef();
+  const dispatch = useDispatch();
+  // console.log(currentUser._id)
 
   const handleImageUpdate = (e) => {
     const file = e.target.files[0]
@@ -39,6 +46,7 @@ const DashboardProfile = () => {
 
   const uploadImage = async () => {
     // console.log('uploading image....')
+    setImageFileUploading(true)
     setimageFileUploadErrror(null)
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
@@ -56,22 +64,61 @@ const DashboardProfile = () => {
           setimageFileUploadProgress(null);
           setImageFile(null);
           setImageFileUrl(null)
+          setImageFileUploading(false)
         },
         () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
-          // setFormData({ ...formData, profilePicture: downloadURL });
-          // setImageFileUploading(false);
+          setFormData({ ...formData, profilePicture: downloadURL });
+          setImageFileUploading(false);
         });
       }
     );
+  }
 
+  const handleUserInput = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+  // console.log(formData)
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if(Object.keys(formData).length === 0) {
+      setUpdateUserError('No Changes Made');
+      return;
+    }
+    if(imageFileUploading) {
+      setUpdateUserError('Please wait for image to upload')
+      return;
+    }
+    try {
+      dispatch(updateStart())
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        // credentials: 'include',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if(!res.ok) {
+        dispatch(updatefailure(data.message));
+        setUpdateUserError(data.message);
+      }else {
+        dispatch(updateSuccess(data));
+        setUpdateUserSucess("User's profile updated successfully")
+      }
+    } catch (error) {
+      dispatch(updatefailure(error.message));
+      setUpdateUserError(error.message)
+    }
   }
 
   return (
     <div className='max-w-lg mx-auto p-4 w-full'>
       <h1 className="text-center my-5 font-semibold text-3xl">Profile</h1>
-      <form action="" className='flex flex-col gap-4'>
+      <form action="" onSubmit={handleUpdate} className='flex flex-col gap-4'>
         <input 
           type="file" 
           accept='image/*' 
@@ -82,7 +129,7 @@ const DashboardProfile = () => {
         {/* Add react circular progress bar as package 
         to make d file upload  more user friendly*/}
 
-        <div className='relative w-60 h-60 self-center cursor-pointer shadow-md
+        <div className='relative w-52 h-52 md:w-60 md:h-60 self-center cursor-pointer shadow-md
           overflow-hidden rounded-full' onClick={() => fileUploadRef.current.click()}
         >        
           {imageFileUploadProgress && 
@@ -118,15 +165,23 @@ const DashboardProfile = () => {
         }
 
         <TextInput type='text' id='username' placeholder='username'
-          defaultValue={currentUser.username} />
+          defaultValue={currentUser.username}  onChange={handleUserInput}/>
         <TextInput type='email' id='email' placeholder='email'
-          defaultValue={currentUser.email} />
-        <TextInput type='password' id='password' placeholder='password'/>
+          defaultValue={currentUser.email}  onChange={handleUserInput}/>
+        <TextInput type='password' id='password' placeholder='password' onChange={handleUserInput}/>
 
         <Button type='submit' gradientDuoTone='greenToBlue' outline >
           Update
         </Button>
       </form>
+      {
+        updateUserSuccess && 
+        <Alert color='success' className='my-4' >{updateUserSuccess}</Alert>
+      }
+      {
+        updateUserError && 
+        <Alert color='success' className='my-4' >{updateUserError}</Alert>
+      }
       <div className="text-red-500 flex justify-between mt-5 font-semibold cursor-pointer">
         <span>Delete Account</span>
         <span>Sign Out</span>
