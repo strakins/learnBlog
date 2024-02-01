@@ -5,14 +5,18 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
-import 'react-circular-progressbar/dist/styles.css'
+import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
 
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null)
   const [imageUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null)
+
+  const navigate = useNavigate();
 
 
   const handlePhotoUpload = async () => {
@@ -43,7 +47,6 @@ const CreatePost = () => {
               setImageUploadError(null);
               setFormData({ ...formData, image: downloadURL });
             });
-            console.log(formData)
         }
       );
 
@@ -52,15 +55,62 @@ const CreatePost = () => {
       setImageUploadProgress(null);
       console.log(error)
     }
+  };
+
+  const handleCreatePost = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('api/post/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if(!res.ok) {
+        setPublishError(data.message)
+      }
+      // if(data.success === false) {
+      //   setPublishError(data.message)
+      //   return;
+      // }
+      if(res.ok) {
+        setPublishError(null)
+        navigate(`/posts/${data.slug}`)
+      }
+    } catch (error) {
+      setPublishError('Something went wrong')
+    }
   }
+
 
   return (
     <div className="p-4 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-2xl font-semibold my-8">Create a Post</h1>
-      <form className="flex flex-col gap-4">
+      {
+        publishError && 
+        <Alert color='failure' className="my-4">
+          {publishError}
+        </Alert>
+      }
+      <form className="flex flex-col gap-4" onSubmit={handleCreatePost}>
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <TextInput type="text" placeholder="Title" id="title" required className="flex-1"/>
-          <Select>
+          <TextInput 
+            type="text" 
+            placeholder="Title" 
+            id="title" 
+            required 
+            className="flex-1"
+            onChange={(e) => 
+              setFormData({ ...formData, title: e.target.value})
+            }
+          />
+          <Select
+            onChange={(e) => 
+              setFormData({ ...formData, category: e.target.value})
+            }
+          >
             <option value='uncategorized' >Select a Category</option>
             <option value='education' >Education</option>
             <option value='travels' >Travels</option>
@@ -104,7 +154,7 @@ const CreatePost = () => {
           <img
             src={formData.image}
             alt='upload'
-            className='w-full h-72 object-cover'
+            className='w-full h-72 object-contain'
           />
         )}
         <ReactQuill 
@@ -112,9 +162,12 @@ const CreatePost = () => {
           placeholder="Add Content Here...." 
           className="h-64 mb-10" 
           required
+          onChange={(value) => { 
+            setFormData({ ...formData, content: value});
+          }}
         />
         <Button type='submit' gradientDuoTone='greenToBlue' >
-          Publish
+          Publish Post
         </Button>
       </form>
     </div>
