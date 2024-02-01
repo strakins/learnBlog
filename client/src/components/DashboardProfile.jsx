@@ -10,6 +10,7 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { Link } from 'react-router-dom'
 import { 
   updateStart, 
   updateSuccess, 
@@ -40,7 +41,7 @@ const DashboardProfile = () => {
   const dispatch = useDispatch();
   // console.log(currentUser._id)
 
-  const { currentUser, error } = useSelector( state => state.user)
+  const { currentUser, error, loading } = useSelector( state => state.user)
 
   const handleImageUpdate = (e) => {
     const file = e.target.files[0]
@@ -219,9 +220,17 @@ const DashboardProfile = () => {
           defaultValue={currentUser.email}  onChange={handleUserInput}/>
         <TextInput type='password' id='password' placeholder='password' onChange={handleUserInput}/>
 
-        <Button type='submit' gradientDuoTone='greenToBlue' outline >
-          Update
+        <Button type='submit' gradientDuoTone='greenToBlue' outline disabled={loading || imageFileUploading} >
+          { loading ? 'loading': 'Update'}
         </Button>
+        { 
+          currentUser.isAdmin &&
+          <Link to='/createpost'>
+            <Button type='button' gradientDuoTone='greenToBlue' className='w-full' >
+                Create Post
+            </Button>
+          </Link>
+        }
       </form>
       {
         updateUserSuccess && 
