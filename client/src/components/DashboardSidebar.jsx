@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOutSuceess } from '../redux/user/userSlice';
+import { useSelector } from 'react-redux'; 
 
 
 const DashboardSidebar = () => {
@@ -12,6 +13,8 @@ const DashboardSidebar = () => {
   const location = useLocation();
   const [tab, setTab] = useState('');
   const dispatch = useDispatch();
+
+  const { currentUser } = useSelector(state => state.user)
 
   const handleSignOut = async () => {
     try {
@@ -39,16 +42,16 @@ const DashboardSidebar = () => {
   return (
     <Sidebar className='w-full md:w-60'>
         <Sidebar.Items>
-            <Sidebar.ItemGroup>
+            <Sidebar.ItemGroup className='flex flex-col gap-2'>
                 <Link to={'/dashboard?tab=profile'}>
                     <Sidebar.Item 
                       active={tab === 'profile'} 
                       icon={FaUser} 
-                      label={'User'} 
+                      label={currentUser.isAdmin ? 'Admin' : 'User'} 
                       labelColor='dark'
                       as='div'
                     >
-                        Profile
+                      Profile
                     </Sidebar.Item>
                 </Link>
 
@@ -59,7 +62,7 @@ const DashboardSidebar = () => {
                       as='div'
 
                     >
-                        Posts
+                        All Posts
                     </Sidebar.Item>
                 </Link>
                 <Sidebar.Item icon={FaSignOutAlt} onClick={handleSignOut}>
