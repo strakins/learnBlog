@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import  { Link } from 'react-router-dom'
 
 
 const DashboardPosts = () => {
 
-  const [userPosts, setUserPosts] = useState([])
+  const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
 
   const { currentUser } = useSelector((state) => state.user)
 
-  console.log(userPosts)
-  // console.log(userPosts[1].updatedAt)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,7 +18,10 @@ const DashboardPosts = () => {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`)
         const data = await res.json();
         if(res.ok){
-          setUserPosts(data.posts)
+          setUserPosts(data.posts);
+          if(data.posts.length < 9) {
+            setShowMore(false)
+          }
         }
       } catch (error) {
         console.log(error)
@@ -29,7 +31,24 @@ const DashboardPosts = () => {
     if(currentUser.isAdmin) {
       fetchPosts();
     }
-  }, [currentUser._id])
+  }, [currentUser._id]);
+
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`)
+      const data = await res.json();
+        if(res.ok){
+          setUserPosts((prev) => [ ...prev, ...data.posts]);
+          if(data.posts.length < 9) {
+            setShowMore(false)
+          }
+        }
+    } catch (error) {
+      console.log(error)
+    }
+  } 
+
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-4 
       scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300
@@ -83,6 +102,17 @@ const DashboardPosts = () => {
 
               }
             </Table>
+            {
+              showMore && 
+              <Button 
+                outline 
+                gradientDuoTone='greenToBlue' 
+                className="my-5 mx-auto"
+                onClick={handleShowMore}
+              >
+                Show More
+              </Button>
+            }
           </>
         )
         :
