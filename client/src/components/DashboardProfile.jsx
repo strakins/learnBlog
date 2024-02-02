@@ -27,6 +27,8 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 const DashboardProfile = () => {
 
+  const[userPosts, setUserPosts] = useState([])
+
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setimageFileUploadProgress] = useState(null);
@@ -165,8 +167,36 @@ const DashboardProfile = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`)
+        const data = await res.json();
+        if(res.ok){
+          setUserPosts(data.posts)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    // fetchPosts();
+    if(currentUser.isAdmin) {
+      fetchPosts();
+    }
+  }, [currentUser._id])
+
   return (
     <div className='max-w-lg mx-auto p-4 w-full'>
+      {/* <div>
+        {
+          userPosts.map((item) => {
+            return <div >
+              <h1>{item.title}</h1>
+            </div>
+          })
+        }
+      </div> */}
+
       <h1 className="text-center my-5 font-semibold text-3xl">Profile</h1>
       <form action="" onSubmit={handleUpdate} className='flex flex-col gap-4'>
         <input 
@@ -271,6 +301,8 @@ const DashboardProfile = () => {
           </div>
         </Modal.Body>
       </Modal>
+
+      
     </div>
   )
 }
