@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { Button, Table } from "flowbite-react";
-import  { Link } from 'react-router-dom'
+import { Button, Modal, Table } from "flowbite-react";
+import  { Link } from 'react-router-dom';
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 
 const DashboardPosts = () => {
 
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState('');
 
   const { currentUser } = useSelector((state) => state.user)
 
@@ -47,7 +50,24 @@ const DashboardPosts = () => {
     } catch (error) {
       console.log(error)
     }
-  } 
+  };
+
+  const handleDeletePost = async () => {
+    setShowModal(false);
+    try {
+      const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if(!res.ok) {
+        console.log(data.method)
+      } else {
+        setUserPosts((prev) => prev.filter((post) => post._id !== postIdToDelete));
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-4 
@@ -88,7 +108,17 @@ const DashboardPosts = () => {
                       {post.category}
                     </Table.Cell>
                     <Table.Cell>
-                      <span className="font-medium text-red-500 hover:cursor-pointer hover:underline">Delete</span>
+                      <span 
+                        className="font-medium text-red-500 
+                          hover:cursor-pointer hover:underline"
+                        onClick={() => {
+                          setShowModal(true)
+                          setPostIdToDelete(post._id)
+                          // console.log(postIdToDelete)
+                        }}
+                        >
+                          Delete
+                        </span>
                     </Table.Cell>
                     <Table.Cell>
                       <Link to={`/update-posts/${post._id}`}>
@@ -120,6 +150,29 @@ const DashboardPosts = () => {
           <p> You Have no Posts Yet! </p>
         )
       }
+      <Modal 
+        show={showModal} 
+        onClose={() => setShowModal(false)}
+        popup 
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <AiOutlineExclamationCircle className='h-14 w-14 text-gray-500 dark:text-gray-200 my-4 mx-auto' />
+            {/* <h3 className='mb-3 text-lg text-gray-600 dark:text-gray-300'>We don't like to let go</h3> */}
+            <h3 className='mb-3 text-lg text-red-500 '>`Are you sure, you wanna delete the Post? `</h3>
+            <div className='flex justify-between mt-8'>
+              <Button color='failure' onClick={handleDeletePost} >
+                Yes, I'm sure
+              </Button>
+              <Button color='gray' onClick={() => setShowModal(false)} >
+                No, Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
