@@ -3,13 +3,14 @@ import { useLocation } from 'react-router-dom';
 import DashboardSidebar from '../components/DashboardSidebar';
 import DashboardProfile from '../components/DashboardProfile';
 import DashboardPosts from '../components/DashboardPosts';
+import DashboardUsers from '../components/DashboardUsers';
 
 
 
 const Dashboard = () => {
 
   const location = useLocation();
-  const [tab, setTab] = useState('')
+  const [tab, setTab] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search)
@@ -30,9 +31,17 @@ const Dashboard = () => {
 
         {/* Main section */}
         
+          {/* Profile */}
           {tab === 'profile' && < DashboardProfile />}
         
+          {/* Posts */}
           {tab === 'posts' && < DashboardPosts />}
+
+          {/* Users */}
+          
+            
+          {  tab === 'users' && < DashboardUsers />}
+          
         
       </div>
     </div>

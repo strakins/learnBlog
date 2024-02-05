@@ -1,49 +1,50 @@
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { Button, Modal, Table } from "flowbite-react";
-import  { Link } from 'react-router-dom';
+// import  { Link } from 'react-router-dom';
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { FaCheck, FaTimes } from "react-icons/fa";
+import { TfiWrite } from "react-icons/tfi";
 
 
-const DashboardPosts = () => {
+const DashboardUsers = () => {
 
-  const [userPosts, setUserPosts] = useState([]);
+  const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState('');
+  const [userIdToDelete, setUserIdToDelete] = useState('');
 
   const { currentUser } = useSelector((state) => state.user)
 
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchUsers = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`)
+        const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
-        if(res.ok){
-          setUserPosts(data.posts);
-          if(data.posts.length < 9) {
-            setShowMore(false)
+        if (res.ok) {
+          setUsers(data.users);
+          if (data.users.length < 9) {
+            setShowMore(false);
           }
         }
       } catch (error) {
-        console.log(error)
+        console.log(error.message);
       }
     };
-    // fetchPosts();
-    if(currentUser.isAdmin) {
-      fetchPosts();
+    if (currentUser.isAdmin) {
+      fetchUsers();
     }
   }, [currentUser._id]);
 
   const handleShowMore = async () => {
-    const startIndex = userPosts.length;
+    const startIndex = users.length;
     try {
       const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`)
       const data = await res.json();
         if(res.ok){
-          setUserPosts((prev) => [ ...prev, ...data.posts]);
-          if(data.posts.length < 9) {
+          setUsers((prev) => [ ...prev, ...data.posts]);
+          if(data.users.length < 9) {
             setShowMore(false)
           }
         }
@@ -52,17 +53,17 @@ const DashboardPosts = () => {
     }
   };
 
-  const handleDeletePost = async () => {
+  const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`, {
+      const res = await fetch(`/api/user/deleteuser/${userIdToDelete}/${currentUser._id}`, {
         method: 'DELETE'
       });
       const data = await res.json();
       if(!res.ok) {
         console.log(data.method)
       } else {
-        setUserPosts((prev) => prev.filter((post) => post._id !== postIdToDelete));
+        setUsers((prev) => prev.filter((post) => post._id !== userIdToDelete));
       }
     } catch (error) {
       console.log(error)
@@ -76,36 +77,42 @@ const DashboardPosts = () => {
       "
     >
       { 
-        currentUser.isAdmin && userPosts.length > 0 ?
+        currentUser.isAdmin && users.length > 0 ?
         (
           <>
             <Table hoverable className="shadow-md">
               <Table.Head>
-                <Table.HeadCell>Date Updated</Table.HeadCell>
-                <Table.HeadCell>Post Image</Table.HeadCell>
-                <Table.HeadCell>Post Title</Table.HeadCell>
-                <Table.HeadCell>Category</Table.HeadCell>
+                <Table.HeadCell>Date Created</Table.HeadCell>
+                <Table.HeadCell>User Image</Table.HeadCell>
+                <Table.HeadCell>User Name</Table.HeadCell>
+                <Table.HeadCell>Email</Table.HeadCell>
+                <Table.HeadCell>IsAdmin</Table.HeadCell>
                 <Table.HeadCell>Delete</Table.HeadCell>
                 <Table.HeadCell>
                   <span>Edit</span>
                 </Table.HeadCell>
               </Table.Head>
-              {  userPosts.map((post) => {
-                return <Table.Body className="divide-y" key={post._id}>
+              {  users.map((user) => {
+                return <Table.Body className="divide-y" key={user._id}>
                   <Table.Row className="bg-white dark:border-red-400 dark:bg-slate-900">
-                    <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
+                    <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
                     <Table.Cell>
-                      <Link to={`/posts/${post.slug}`}>
-                        <img src={post.image} alt={post.title} className="h-12 w-20 object-cover bg-gray-500 rounded-md"/>
-                      </Link>
+                      
+                        <img src={user.profilePicture} alt={user.username} className="h-20 w-20 object-cover bg-gray-500 rounded-full"/>
+                    
                     </Table.Cell>
                     <Table.Cell>
-                      <Link className="font-medium text-gray-900 dark:text-white" to={`/posts/${post.slug}`}>
-                        {post.title}
-                      </Link>
+                      <span className="font-medium text-gray-900 dark:text-white" >
+                        {user.username}
+                      </span>
                     </Table.Cell>
                     <Table.Cell>
-                      {post.category}
+                      {user.email}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {user.isAdmin ? <FaCheck className="text-green-500"/> :  < TfiWrite className="text-blue-500"/>}
+                      {/* {user.isCreator  && < TfiWrite className="text-blue-500"/>} */}
+                      {/* {user.Admin  && <FaTimes className="text-red-500"/> } */}
                     </Table.Cell>
                     <Table.Cell>
                       <span 
@@ -113,17 +120,12 @@ const DashboardPosts = () => {
                           hover:cursor-pointer hover:underline"
                         onClick={() => {
                           setShowModal(true)
-                          setPostIdToDelete(post._id)
-                          // console.log(postIdToDelete)
+                          setUserIdToDelete(user._id)
+                          // console.log(userIdToDelete)
                         }}
                         >
                           Delete
                         </span>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Link to={`/update-post/${post._id}`}>
-                        <span className="text-green-600 hover:underline">Edit</span>
-                      </Link>
                     </Table.Cell>
                   </Table.Row>
                   
@@ -147,7 +149,7 @@ const DashboardPosts = () => {
         )
         :
         (
-          <p> You Have no Posts Yet! </p>
+          <p> You Do not have registered Users! </p>
         )
       }
       <Modal 
@@ -161,9 +163,9 @@ const DashboardPosts = () => {
           <div className="text-center">
             <AiOutlineExclamationCircle className='h-14 w-14 text-gray-500 dark:text-gray-200 my-4 mx-auto' />
             {/* <h3 className='mb-3 text-lg text-gray-600 dark:text-gray-300'>We don't like to let go</h3> */}
-            <h3 className='mb-3 text-lg text-red-500 '>`Are you sure, you wanna delete the Post? `</h3>
+            <h3 className='mb-3 text-lg text-red-500 '>`Are you sure, you wanna delete the User? `</h3>
             <div className='flex justify-between mt-8'>
-              <Button color='failure' onClick={handleDeletePost} >
+              <Button color='failure' onClick={handleDeleteUser} >
                 Yes, I'm sure
               </Button>
               <Button color='gray' onClick={() => setShowModal(false)} >
@@ -177,4 +179,4 @@ const DashboardPosts = () => {
   )
 }
 
-export default DashboardPosts
+export default DashboardUsers;

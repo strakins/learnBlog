@@ -1,6 +1,6 @@
 
 import { Sidebar } from 'flowbite-react';
-import { FaUser, FaListUl, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaListUl, FaSignOutAlt, FaUsers } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -47,24 +47,40 @@ const DashboardSidebar = () => {
                     <Sidebar.Item 
                       active={tab === 'profile'} 
                       icon={FaUser} 
-                      label={currentUser.isAdmin ? 'Admin' : 'User'} 
+                      label={currentUser.isAdmin ? 'Admin' : currentUser.isCreator ? 'Creator' : 'User'}
+                      
                       labelColor='dark'
                       as='div'
                     >
                       Profile
                     </Sidebar.Item>
                 </Link>
+                {
+                  currentUser.isAdmin || currentUser.isCreator ?
+                  <Link to={'/dashboard?tab=posts'}>
+                      <Sidebar.Item 
+                        active={tab === 'posts'} 
+                        icon={FaListUl} 
+                        as='div'
 
-                <Link to={'/dashboard?tab=posts'}>
-                    <Sidebar.Item 
-                      active={tab === 'posts'} 
-                      icon={FaListUl} 
-                      as='div'
+                      >
+                          All Posts
+                      </Sidebar.Item>
+                  </Link> : ''
+                }
+                {
+                  currentUser.isAdmin && 
+                  <Link to={'/dashboard?tab=users'}>
+                      <Sidebar.Item 
+                        active={tab === 'posts'} 
+                        icon={FaUsers} 
+                        as='div'
 
-                    >
-                        All Posts
-                    </Sidebar.Item>
-                </Link>
+                      >
+                          All Users
+                      </Sidebar.Item>
+                  </Link>
+                }
                 <Sidebar.Item icon={FaSignOutAlt} onClick={handleSignOut}>
                     Sign Out
                 </Sidebar.Item>
