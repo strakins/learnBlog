@@ -121,7 +121,7 @@ const DashboardPosts = () => {
                         </span>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/update-posts/${post._id}`}>
+                      <Link to={`/update-post/${post._id}`}>
                         <span className="text-green-600 hover:underline">Edit</span>
                       </Link>
                     </Table.Cell>
