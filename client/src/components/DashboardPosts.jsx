@@ -95,12 +95,12 @@ const DashboardPosts = () => {
                   <Table.Row className="bg-white dark:border-red-400 dark:bg-slate-900">
                     <Table.Cell>{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
                     <Table.Cell>
-                      <Link to={`/posts/${post.slug}`}>
+                      <Link to={`/post/${post.slug}`}>
                         <img src={post.image} alt={post.title} className="h-12 w-20 object-cover bg-gray-500 rounded-md"/>
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
-                      <Link className="font-medium text-gray-900 dark:text-white" to={`/posts/${post.slug}`}>
+                      <Link className="font-medium text-gray-900 dark:text-white" to={`/post/${post.slug}`}>
                         {post.title}
                       </Link>
                     </Table.Cell>

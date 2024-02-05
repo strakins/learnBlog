@@ -12,6 +12,7 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [emailToDelete, setEmailToDelete] = useState('');
   const [userIdToDelete, setUserIdToDelete] = useState('');
 
   const { currentUser } = useSelector((state) => state.user)
@@ -56,14 +57,15 @@ const DashboardUsers = () => {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/user/deleteuser/${userIdToDelete}/${currentUser._id}`, {
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
         method: 'DELETE'
       });
       const data = await res.json();
-      if(!res.ok) {
-        console.log(data.method)
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
       } else {
-        setUsers((prev) => prev.filter((post) => post._id !== userIdToDelete));
+          console.log(data.message);
       }
     } catch (error) {
       console.log(error)
@@ -76,6 +78,7 @@ const DashboardUsers = () => {
       dark:scrollbar-track-slate-600 dark:scrollbar-thumb-slate-500
       "
     >
+      <h1 className="my-5 p-2 bg-gray-400 rounded-md w-fit">Hi {currentUser.username}, you currently have {users.length} registered users on your Site</h1>
       { 
         currentUser.isAdmin && users.length > 0 ?
         (
@@ -121,7 +124,7 @@ const DashboardUsers = () => {
                         onClick={() => {
                           setShowModal(true)
                           setUserIdToDelete(user._id)
-                          // console.log(userIdToDelete)
+                          setEmailToDelete(user.email)
                         }}
                         >
                           Delete
@@ -163,7 +166,7 @@ const DashboardUsers = () => {
           <div className="text-center">
             <AiOutlineExclamationCircle className='h-14 w-14 text-gray-500 dark:text-gray-200 my-4 mx-auto' />
             {/* <h3 className='mb-3 text-lg text-gray-600 dark:text-gray-300'>We don't like to let go</h3> */}
-            <h3 className='mb-3 text-lg text-red-500 '>`Are you sure, you wanna delete the User? `</h3>
+            <h3 className='mb-3 text-lg text-red-500 '>Are you sure you want to delete {emailToDelete}!</h3>
             <div className='flex justify-between mt-8'>
               <Button color='failure' onClick={handleDeleteUser} >
                 Yes, I'm sure
