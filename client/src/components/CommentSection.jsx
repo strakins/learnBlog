@@ -78,6 +78,11 @@ const CommentSection = ({postId}) => {
                 </div>
             )
         }
+        {commentError && (
+            <Alert color='failure' className='my-5'>
+              {commentError}
+            </Alert>
+        )} 
         {currentUser && (
         <form
           onSubmit={handleSubmitComment}
@@ -98,11 +103,7 @@ const CommentSection = ({postId}) => {
               Submit
             </Button>
           </div>
-          {commentError && (
-            <Alert color='failure' className='mt-5'>
-              {commentError}
-            </Alert>
-          )}
+          
         </form>
       )}
       {comments.length === 0 ? (

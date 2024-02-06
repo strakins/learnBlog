@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { Button, Modal, Table } from "flowbite-react";
 // import  { Link } from 'react-router-dom';
 import { AiOutlineExclamationCircle } from "react-icons/ai";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaCheck, FaTimes, FaUserTie } from "react-icons/fa";
 import { TfiWrite } from "react-icons/tfi";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 
 const DashboardUsers = () => {
@@ -113,9 +114,10 @@ const DashboardUsers = () => {
                       {user.email}
                     </Table.Cell>
                     <Table.Cell>
-                      {user.isAdmin ? <FaCheck className="text-green-500"/> :  < TfiWrite className="text-blue-500"/>}
-                      {/* {user.isCreator  && < TfiWrite className="text-blue-500"/>} */}
-                      {/* {user.Admin  && <FaTimes className="text-red-500"/> } */}
+                      {/* {user.isAdmin ? <FaCheck className="text-green-500"/> :  < TfiWrite className="text-blue-500"/>} */}
+                      {user.isCreator  && < TfiWrite className="text-blue-500"/>}
+                      {user.isAdmin  && <MdAdminPanelSettings className="text-green-500"/> }
+                      {!user.isAdmin  && !user.isCreator && <FaUserTie className="text-red-500"/> }
                     </Table.Cell>
                     <Table.Cell>
                       <span 

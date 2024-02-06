@@ -1,12 +1,12 @@
 import express from 'express';
-import verifyToken from '../utils/verifyUser.js'
+import { verifyToken } from '../utils/verifyUser.js'
 import {
   createComment,
   deleteComment,
   editComment,
-  getPostComments,
+  getPostComments, 
   getcomments,
-  likeComment,
+  likeComment, 
 } from '../controllers/commentControllers.js';
 
 const router = express.Router();
