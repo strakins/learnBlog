@@ -2,14 +2,35 @@ import { Button, Dropdown, Navbar, TextInput, Avatar } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import {AiOutlineSearch} from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme} from '../redux/theme/themeSlice';
+import { signOutSuceess } from '../redux/user/userSlice';
 
 
 
 const Header = () => {
 
   const path = useLocation().pathname;
-  const {currentUser} = useSelector(state => state.user)
+  const {currentUser} = useSelector(state => state.user);
+  const {theme} = useSelector(state => state.theme);
+  const dispatch = useDispatch();
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: "POST"
+      });
+      const data = await res.json();
+      if(!res.ok) {
+        console.log(data.message);
+      }else {
+        dispatch(signOutSuceess())
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
 
   return (
     <Navbar className='border-b-4'>
@@ -23,19 +44,25 @@ const Header = () => {
             type='text'
             placeholder='Search...'
             rightIcon={AiOutlineSearch}
-            className='hidden md:inline'
+            className='hidden lg:inline'
           />
         </form>
         {/* {
           !currentUser &&
         } */}
-        <Button className='w-12 h-8 md:hidden' color='gray' pill>
+        <Button className='w-12 h-8 lg:hidden' color='gray' pill>
           <AiOutlineSearch />
         </Button>
         <div className='flex gap-2 md:order-2'>
-          <Button className='hidden md:inline' color='gray'>
-            <FaMoon />
-            {/* <FaSun/> */}
+          <Button 
+            className='hidden md:inline' 
+            color='gray'
+            onClick={() => dispatch(toggleTheme())}
+          >
+            {theme === 'light' ? 
+            <FaMoon /> :
+             <FaSun/>
+            }
           </Button >
           {
             currentUser ? 
@@ -59,16 +86,18 @@ const Header = () => {
                   </Dropdown.Item>
                 </Link>
                 <Dropdown.Divider />
-                  <Dropdown.Item>
+                  <Dropdown.Item onClick={handleSignOut}>
                     Sign Out
                   </Dropdown.Item>
 
               </Dropdown.Header>
             </Dropdown>:
             <Link to='login' className='hidden md:inline'>
-              <Button gradientDuoTone='greenToBlue' outline>
+              {
+                !currentUser &&
+                <Button gradientDuoTone='greenToBlue' outline>
                 Sign in
-              </Button>
+              </Button>}
             </Link>
           }
           <Navbar.Toggle />

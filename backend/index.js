@@ -3,7 +3,9 @@ import mongoose  from 'mongoose';
 import dotenv from 'dotenv';
 import userRoute from './routes/userRoutes.js';
 import authRoute from './routes/authRoutes.js';
-
+import postRoute from './routes/postRoutes.js';
+import commentRoute from './routes/commentRoutes.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI)
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.listen(3000, () => {
     console.log('Server Running on port 3000')
@@ -26,6 +29,8 @@ app.listen(3000, () => {
 
 app.use('/api/user', userRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/post', postRoute);
+app.use('/api/comment', commentRoute);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

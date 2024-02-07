@@ -7,12 +7,19 @@ import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import PrivateRoute from './components/PrivateRoute';
+import CreatePost from './pages/CreatePost';
+import AdminRoute from './components/AdminRoute';
+import UpdatePost from './pages/UpdatePost';
+import SinglePostPage from './pages/SinglePostPage';
+import ScrollToTop from './components/ScrollToTop';
 
 
 function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -20,7 +27,14 @@ function App() {
         <Route path='/login' element={< Login />} />
         <Route path='/register' element={< Register />} />
         <Route path='/projects' element={< Projects />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/post/:postSlug' element={< SinglePostPage />} />
+        <Route element={<PrivateRoute />} >
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Route>
+        <Route element={<AdminRoute/>}>
+          <Route path='/createpost' element={<CreatePost/>} />
+          <Route path='/update-post/:postId' element={<UpdatePost />} />
+        </Route>
         
       </Routes>
       <Footer />
