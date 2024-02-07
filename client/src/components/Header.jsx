@@ -44,13 +44,13 @@ const Header = () => {
             type='text'
             placeholder='Search...'
             rightIcon={AiOutlineSearch}
-            className='hidden md:inline'
+            className='hidden lg:inline'
           />
         </form>
         {/* {
           !currentUser &&
         } */}
-        <Button className='w-12 h-8 md:hidden' color='gray' pill>
+        <Button className='w-12 h-8 lg:hidden' color='gray' pill>
           <AiOutlineSearch />
         </Button>
         <div className='flex gap-2 md:order-2'>
