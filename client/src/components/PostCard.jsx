@@ -11,21 +11,21 @@ const PostCard = ({ post }) => {
     }
 
   return (
-    <div className='group relative w-full border border-teal-500 hover:border-2 h-[350px] overflow-hidden rounded-lg  transition-all'>
+    <div className='group relative border border-teal-500 hover:border-2 h-[300px] overflow-hidden rounded-lg  transition-all'>
       <Link to={`/post/${post.slug}`}>
         <img
           src={post.image}
           alt='post cover'
-          className='h-[240px] w-full  object-cover group-hover:h-[190px] transition-all duration-300 z-20'
+          className='h-[200px] w-full  object-cover group-hover:h-[170px] transition-all duration-300 z-20'
         />
       </Link>
       <div className='p-3 flex flex-col gap-2'>
             <p className='text-lg font-semibold line-clamp-1'>{post.title}</p>
         <article className="flex justify-between ">
             <div>
-                <span className='italic text-sm'>{post.category}</span>
+                <span className='italic text-xs capitalize'>{post.category}</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 text-xs">
                 <FaEye/>
                 <p>0</p>
                 {/* {read && {read}} */}

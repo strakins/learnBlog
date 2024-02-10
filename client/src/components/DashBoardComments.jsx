@@ -11,6 +11,9 @@ const DashBoardComments = () => {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [commentIdToDelete, setCommentIdToDelete] = useState('');
+
+  // console.log(comments)
+  
   useEffect(() => {
     const fetchComments = async () => {
       try {

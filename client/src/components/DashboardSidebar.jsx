@@ -2,6 +2,7 @@
 import { Sidebar } from 'flowbite-react';
 import { FaUser, FaListUl, FaSignOutAlt, FaUsers, FaComments  } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import { MdDashboard } from "react-icons/md";
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOutSuceess } from '../redux/user/userSlice';
@@ -55,6 +56,18 @@ const DashboardSidebar = () => {
                       Profile
                     </Sidebar.Item>
                 </Link>
+                { currentUser.isAdmin || currentUser.isCreator ? 
+                  <Link to={'/dashboard?tab=dashboard'}>
+                    <Sidebar.Item 
+                      active={tab === 'dashboard'} 
+                      icon={MdDashboard}                      
+                      as='div'
+                    >
+                      Dashboard
+                    </Sidebar.Item>
+                  </Link>
+                  : ''
+                }
                
                 {
                   currentUser.isAdmin || currentUser.isCreator ?
@@ -63,13 +76,13 @@ const DashboardSidebar = () => {
                         active={tab === 'posts'} 
                         icon={FaListUl} 
                         as='div'
-
                       >
                           All Posts
                       </Sidebar.Item>
                   </Link> : ''
                 }
-                 <Link to={'/dashboard?tab=comments'}>
+                 { currentUser.isAdmin || currentUser.isCreator ?
+                  <Link to={'/dashboard?tab=comments'}>
                     <Sidebar.Item 
                       active={tab === 'comments'} 
                       icon={FaComments}                       
@@ -78,7 +91,7 @@ const DashboardSidebar = () => {
                     >
                       Comments
                     </Sidebar.Item>
-                </Link>
+                  </Link> : '' } 
                 {
                   currentUser.isAdmin && 
                   <Link to={'/dashboard?tab=users'}>

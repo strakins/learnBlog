@@ -254,12 +254,14 @@ const DashboardProfile = () => {
           { loading ? 'loading': 'Update'}
         </Button>
         { 
-          currentUser.isAdmin &&
+          currentUser.isAdmin || currentUser.isCreator ?
           <Link to='/createpost'>
             <Button type='button' gradientDuoTone='greenToBlue' className='w-full' >
                 Create Post
             </Button>
           </Link>
+          : 
+          ''
         }
       </form>
       {
