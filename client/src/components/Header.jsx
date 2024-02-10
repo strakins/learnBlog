@@ -75,12 +75,12 @@ const Header = () => {
           />
         </form>
         
-        <Button className='w-12 h-8 lg:hidden' color='gray' pill>
+        {/* <Button className='w-12 h-8 lg:hidden' color='gray' pill>
           <AiOutlineSearch />
-        </Button>
+        </Button> */}
         <div className='flex gap-2 md:order-2'>
           <Button 
-            className='hidden md:inline' 
+            className='' 
             color='gray'
             onClick={() => dispatch(toggleTheme())}
           >
@@ -89,6 +89,7 @@ const Header = () => {
              <FaSun/>
             }
           </Button >
+          <section className='hidden md:inline'>
           {
             currentUser ? 
             <Dropdown 
@@ -122,26 +123,41 @@ const Header = () => {
               {
                 !currentUser &&
                 <Button gradientDuoTone='greenToBlue' outline>
-                Sign in
-              </Button>}
-            </Link>
-          }
+                  Sign in
+                </Button>}
+                </Link>
+              }
+          </section>
           <Navbar.Toggle />
         </div>
           <Navbar.Collapse >
               <Navbar.Link active={path === '/'} as={'div'}>
                 <Link to='/' className='text-lg'>Home</Link>
               </Navbar.Link>
+              <Navbar.Link active={path === '/projects'} as={'div'}>
+                <Link to='/projects' className='text-lg'>Posts</Link>
+              </Navbar.Link>
               <Navbar.Link active={path === '/about'} as={'div'}>
                 <Link to='/about' className='text-lg'>About Me</Link>
               </Navbar.Link>
-              <Navbar.Link active={path === '/projects'} as={'div'}>
-                <Link to='/projects' className='text-lg'>Posts</Link>
+              <Navbar.Link active={path === '/contact'} as={'div'}>
+                <Link to='/contact' className='text-lg'>Contact Me</Link>
+              </Navbar.Link>
+              <Navbar.Link active={path === '/profile'} as={'div'}>
+                <Link to={'/dashboard?tab=profile'} className='inline md:hidden'>Profile</Link>
               </Navbar.Link>
               {!currentUser && <Navbar.Link active={path === '/login'} as={'div'}>
                 <Link to='/login' className='inline md:hidden'>
                   <Button gradientDuoTone='greenToBlue' outline>
                     Sign in
+                  </Button>
+                </Link>
+              </Navbar.Link>
+              }   
+              {currentUser && <Navbar.Link active={path === '/login'} as={'div'} >
+                <Link to='#' className='inline md:hidden'>
+                  <Button gradientDuoTone='greenToBlue' outline onClick={handleSignOut}>
+                    Sign Out
                   </Button>
                 </Link>
               </Navbar.Link>

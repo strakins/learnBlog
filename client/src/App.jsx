@@ -17,6 +17,7 @@ import Upgrade from './pages/Upgrade';
 // import CreatorRoute from './components/CreatorRoute';
 import DashboardPage from './components/DashboardPage';
 import Search from './pages/Search';
+import Contact from './pages/Contact';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path='/projects' element={< Projects />} />
         <Route path='/upgrade' element={< Upgrade />} />
         <Route path='/search' element={< Search />} />
+        <Route path='/contact' element={< Contact />} />
         <Route path='/post/:postSlug' element={< SinglePostPage />} />
         <Route element={<PrivateRoute />} >
           <Route path='/dashboard' element={<Dashboard />} />
