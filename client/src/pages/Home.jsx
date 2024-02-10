@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import CallToAction from "../components/CallToAction";
-import Typical from 'react-typical'
+// import Typical from 'react-typical'
 
 const Home = () => {
 
@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <div className="p-5">
       <section className="h-32 flex items-center justify-center text-3xl">
-        <Typical
+        {/* <Typical
            steps={['Welcome to Strakins Blog', 4000, 
            'The Best Place to Learn', 4000,
            'The Best Place Write', 4000,
@@ -32,7 +32,7 @@ const Home = () => {
           ]}
            loop={Infinity}
            wrapper="p"
-        />
+        /> */}
       </section>
       <section className='grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5 justify-center'>
           { 
