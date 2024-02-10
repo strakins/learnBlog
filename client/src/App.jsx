@@ -13,6 +13,10 @@ import AdminRoute from './components/AdminRoute';
 import UpdatePost from './pages/UpdatePost';
 import SinglePostPage from './pages/SinglePostPage';
 import ScrollToTop from './components/ScrollToTop';
+import Upgrade from './pages/Upgrade';
+// import CreatorRoute from './components/CreatorRoute';
+import DashboardPage from './components/DashboardPage';
+import Search from './pages/Search';
 
 
 function App() {
@@ -27,6 +31,8 @@ function App() {
         <Route path='/login' element={< Login />} />
         <Route path='/register' element={< Register />} />
         <Route path='/projects' element={< Projects />} />
+        <Route path='/upgrade' element={< Upgrade />} />
+        <Route path='/search' element={< Search />} />
         <Route path='/post/:postSlug' element={< SinglePostPage />} />
         <Route element={<PrivateRoute />} >
           <Route path='/dashboard' element={<Dashboard />} />
@@ -34,7 +40,9 @@ function App() {
         <Route element={<AdminRoute/>}>
           <Route path='/createpost' element={<CreatePost/>} />
           <Route path='/update-post/:postId' element={<UpdatePost />} />
+          <Route path='/dashboard?tab=dashboard' element={<DashboardPage />} />
         </Route>
+        
         
       </Routes>
       <Footer />

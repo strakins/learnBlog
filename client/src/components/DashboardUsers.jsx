@@ -92,9 +92,6 @@ const DashboardUsers = () => {
                 <Table.HeadCell>Email</Table.HeadCell>
                 <Table.HeadCell>IsAdmin</Table.HeadCell>
                 <Table.HeadCell>Delete</Table.HeadCell>
-                <Table.HeadCell>
-                  <span>Edit</span>
-                </Table.HeadCell>
               </Table.Head>
               {  users.map((user) => {
                 return <Table.Body className="divide-y" key={user._id}>
