@@ -1,19 +1,22 @@
 import { Button } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
 import PostCard from '../components/PostCard';
-
+// import { MdOutlineArrowBack } from "react-icons/md";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 
 const SinglePostPage = () => {
     const { postSlug } = useParams();
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [post, setPost] = useState(null);
     const [recentPosts, setRecentPosts] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -59,6 +62,12 @@ const SinglePostPage = () => {
 
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
+      <div 
+       className='bg-gray-400 w-fit px-3 py-2 rounded-md cursor-pointer'
+       onClick={() => navigate(-1)}
+       >
+        <RiArrowGoBackFill />
+      </div>
       <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
         {post && post.title}
       </h1>
