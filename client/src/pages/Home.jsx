@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import CallToAction from "../components/CallToAction";
+import PostCardSkeleton from "../components/PostCardSkeleton";
 // import Typical from 'react-typical'
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const skeletons = [1, 2, 3, 4];
 
   useEffect(() => {
+    setIsLoading(true)
     try {
       const fetchRecentPosts = async () => {
         const res = await fetch(`/api/post/getposts?limit=4`);
         const data = await res.json();
         if (res.ok) {
           setRecentPosts(data.posts);
+          setIsLoading(false);
         }
       };
       fetchRecentPosts();
@@ -38,7 +44,12 @@ const Home = () => {
           { 
             recentPosts
              &&
-            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)
+          }
+
+          {isLoading &&
+            skeletons.map((n) => <PostCardSkeleton key={n} />)
+          }
         </section>
         <div className="my-4">
           < CallToAction />
