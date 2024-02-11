@@ -57,13 +57,13 @@ const FooterCom = () => {
         <div className='w-full sm:flex sm:items-center sm:justify-between'>
           <Footer.Copyright 
             href='https://strakins-portfolio.vercel.app/' 
-            by="Strakin's Blog" 
+            by="Strakins" 
             year={new Date().getFullYear()}
           />
           <div className="flex gap-4 mt-2 md:mt-4 sm:justify-center">
-            <Footer.Icon href='' icon={FaTwitter} />
-            <Footer.Icon href='' icon={FaLinkedin} />
-            <Footer.Icon href='' icon={FaGithub} />
+            <Footer.Icon href='https://twitter.com/straksman' icon={FaTwitter} />
+            <Footer.Icon href='https://www.linkedin.com/in/blessing-akinola-0073b9112/' icon={FaLinkedin} />
+            <Footer.Icon href='https://github.com/strakins' icon={FaGithub} />
           </div>
         </div>
 

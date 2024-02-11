@@ -30,7 +30,7 @@ const Header = () => {
     }
   }, [location.search]);
 
-  console.log(searchTerm)
+  // console.log(searchTerm)
 
   const handleSignOut = async () => {
     try {
@@ -132,16 +132,16 @@ const Header = () => {
         </div>
           <Navbar.Collapse >
               <Navbar.Link active={path === '/'} as={'div'}>
-                <Link to='/' className='text-lg'>Home</Link>
+                <Link to='/' className='text-md'>Home</Link>
               </Navbar.Link>
               <Navbar.Link active={path === '/projects'} as={'div'}>
-                <Link to='/projects' className='text-lg'>Posts</Link>
+                <Link to='/projects' className='text-md'>Posts</Link>
               </Navbar.Link>
               <Navbar.Link active={path === '/about'} as={'div'}>
-                <Link to='/about' className='text-lg'>About Me</Link>
+                <Link to='/about' className='text-md'>About Me</Link>
               </Navbar.Link>
               <Navbar.Link active={path === '/contact'} as={'div'}>
-                <Link to='/contact' className='text-lg'>Contact Me</Link>
+                <Link to='/contact' className='text-md'>Contact Me</Link>
               </Navbar.Link>
               <Navbar.Link active={path === '/profile'} as={'div'}>
                 <Link to={'/dashboard?tab=profile'} className='inline md:hidden'>Profile</Link>

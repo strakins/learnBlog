@@ -18,6 +18,7 @@ import Upgrade from './pages/Upgrade';
 import DashboardPage from './components/DashboardPage';
 import Search from './pages/Search';
 import Contact from './pages/Contact';
+import PageNotFound from './pages/PageNotFound';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path='/projects' element={< Projects />} />
         <Route path='/upgrade' element={< Upgrade />} />
         <Route path='/search' element={< Search />} />
+        <Route path='*' element={< PageNotFound />} />
         <Route path='/contact' element={< Contact />} />
         <Route path='/post/:postSlug' element={< SinglePostPage />} />
         <Route element={<PrivateRoute />} >
