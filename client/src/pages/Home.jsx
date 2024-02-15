@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import CallToAction from "../components/CallToAction";
 import PostCardSkeleton from "../components/PostCardSkeleton";
+import Hero from "../components/Hero";
 // import Typical from 'react-typical'
 
 const Home = () => {
@@ -28,8 +29,10 @@ const Home = () => {
 
   const [recentPosts, setRecentPosts] = useState('')
   return (
+    <>
+    <Hero />
     <div className="p-5">
-      <section className="h-32 flex items-center justify-center text-3xl">
+      {/* <section className="h-32 flex items-center justify-center text-3xl"> */}
         {/* <Typical
            steps={['Welcome to Strakins Blog', 4000, 
            'The Best Place to Learn', 4000,
@@ -39,7 +42,7 @@ const Home = () => {
            loop={Infinity}
            wrapper="p"
         /> */}
-      </section>
+      {/* </section> */}
       <section className='grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5 justify-center'>
           { 
             recentPosts
@@ -56,6 +59,7 @@ const Home = () => {
 
         </div>
     </div>
+  </>
   )
 }
 
