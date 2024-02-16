@@ -5,7 +5,7 @@ const CreatorRoute = () => {
     const {currentUser} = useSelector((state) => state.user)
 
     return currentUser && 
-      currentUser.isCreator ? <Outlet /> : <Navigate to='/restricted' />
+      currentUser.isCreator || currentUser.isAdmin ? <Outlet /> : <Navigate to='/restricted' />
 }
 
 
