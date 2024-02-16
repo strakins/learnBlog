@@ -14,7 +14,7 @@ const PostCard = ({ post }) => {
     // }, [])
 
   return (
-    <div className='group relative border border-teal-500 hover:border-2 h-[300px] overflow-hidden rounded-lg  transition-all'>
+    <div className='group relative border border-teal-500 hover:border-2 h-[320px] overflow-hidden rounded-lg  transition-all'>
       <Link to={`/post/${post.slug}`}>
         <img
           src={post.image}
@@ -23,7 +23,7 @@ const PostCard = ({ post }) => {
         />
       </Link>
       <div className='p-3 flex flex-col gap-2'>
-            <p className='text-lg font-semibold line-clamp-1'>{post.title}</p>
+            <p className='text-md font-semibold line-clamp-2'>{post.title}</p>
         <article className="flex justify-between ">
             <div>
                 <span className='italic text-xs capitalize'>{post.category}</span>

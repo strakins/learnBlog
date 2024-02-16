@@ -77,7 +77,7 @@ const CreatePost = () => {
       // }
       if(res.ok) {
         setPublishError(null)
-        navigate(`/posts/${data.slug}`)
+        navigate(`/post/${data.slug}`) 
       }
     } catch (error) {
       setPublishError('Something went wrong')
@@ -113,6 +113,7 @@ const CreatePost = () => {
           >
             <option value='uncategorized' >Select a Category</option>
             <option value='education' >Education</option>
+            <option value='behavior' >Behavior</option>
             <option value='travels' >Travels</option>
             <option value='web3' >Web 3</option>
             <option value='webdev' >Web Development</option>

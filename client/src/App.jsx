@@ -49,6 +49,7 @@ function App() {
         </Route>
 
         <Route element={<AdminRoute/>}>
+          {/* <Route path='/createpost' element={<CreatePost/>} /> */}
           <Route path='/update-post/:postId' element={<UpdatePost />} />
           <Route path='/dashboard?tab=dashboard' element={<DashboardPage />} />
         </Route>
