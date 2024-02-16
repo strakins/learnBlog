@@ -1,14 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaEye } from "react-icons/fa"
 import { Link } from "react-router-dom"
 
 const PostCard = ({ post }) => {
 
-    const [read, setread ] = useState(10);
+    // const [reads, setReads ] = useState(0);
 
-    const totalRead = () => {
-        setread(read + 1);
-    }
+    // useEffect(() => {
+    //   const totalReads = localStorage.getItem("pageVisits");
+    //   const initailRead = Number(totalReads) || 0;
+    //   setReads(initailRead + 1);
+    //   localStorage.setItem("pageVisits", initailRead + 1)
+    // }, [])
 
   return (
     <div className='group relative border border-teal-500 hover:border-2 h-[300px] overflow-hidden rounded-lg  transition-all'>
@@ -33,7 +36,7 @@ const PostCard = ({ post }) => {
         </article>
         <Link
           to={`/post/${post.slug}`}
-          onClick={totalRead}
+          onClick={() => (``)}
           className='z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2'
         >
           Read article

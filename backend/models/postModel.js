@@ -28,6 +28,10 @@ const postSchema = new mongoose.Schema (
             rwquired: true,
             unique: true,
         },
+        // reads: {
+        //     type: Array,
+        //     default: [],
+        // },
     }, { timestamps: true } 
 );
 

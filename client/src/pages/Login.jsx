@@ -79,7 +79,7 @@ const Login = () => {
               />
             </div>
             <div >
-              <Label  value='Your Pasword' />
+              <Label  value='Your Pasword' /> 
               <TextInput 
                  type='password'
                  placeholder='********'

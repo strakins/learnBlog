@@ -13,12 +13,14 @@ import AdminRoute from './components/AdminRoute';
 import UpdatePost from './pages/UpdatePost';
 import SinglePostPage from './pages/SinglePostPage';
 import ScrollToTop from './components/ScrollToTop';
-import Upgrade from './pages/Upgrade';
+import {Upgrade} from './pages/Upgrade';
 // import CreatorRoute from './components/CreatorRoute';
 import DashboardPage from './components/DashboardPage';
 import Search from './pages/Search';
 import Contact from './pages/Contact';
 import PageNotFound from './pages/PageNotFound';
+import RestrictedAcessPage from './pages/RestrictedAcessPage';
+import CreatorRoute from './components/CreatorRoute';
 
 
 function App() {
@@ -35,14 +37,18 @@ function App() {
         <Route path='/projects' element={< Projects />} />
         <Route path='/upgrade' element={< Upgrade />} />
         <Route path='/search' element={< Search />} />
+        <Route path='/restricted' element={< RestrictedAcessPage />} />
         <Route path='*' element={< PageNotFound />} />
         <Route path='/contact' element={< Contact />} />
         <Route path='/post/:postSlug' element={< SinglePostPage />} />
         <Route element={<PrivateRoute />} >
           <Route path='/dashboard' element={<Dashboard />} />
         </Route>
-        <Route element={<AdminRoute/>}>
+        <Route element={<CreatorRoute />} >
           <Route path='/createpost' element={<CreatePost/>} />
+        </Route>
+
+        <Route element={<AdminRoute/>}>
           <Route path='/update-post/:postId' element={<UpdatePost />} />
           <Route path='/dashboard?tab=dashboard' element={<DashboardPage />} />
         </Route>
