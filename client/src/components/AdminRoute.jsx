@@ -8,7 +8,7 @@ const AdminRoute = () => {
   const {currentUser} = useSelector((state) => state.user)
 
   return currentUser && 
-    currentUser.isAdmin || currentUser.isCreator ? <Outlet /> : <Navigate to='/upgrade' />
+    currentUser.isAdmin || currentUser.isCreator ? <Outlet /> : <Navigate to='/login' />
 }
 
 export default AdminRoute;

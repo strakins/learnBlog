@@ -263,6 +263,16 @@ const DashboardProfile = () => {
           : 
           ''
         }
+        { 
+          !currentUser.isAdmin && !currentUser.isCreator ?
+          <Link to='/upgrade'>
+            <Button type='button' gradientDuoTone='greenToBlue' className='w-full' >
+              Apply as Content Creator
+            </Button>
+          </Link>
+          : 
+          ''
+        }
       </form>
       {
         updateUserSuccess && 

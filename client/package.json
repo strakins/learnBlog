@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.1.0",
     "@reduxjs/toolkit": "^2.0.1",
+    "emailjs": "^4.0.3",
     "firebase": "^10.7.2",
     "flowbite-react": "^0.7.2",
     "moment": "^2.30.1",
